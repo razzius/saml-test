@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, url_for
+from flask import Flask, url_for, request
 
 from signxml import XMLVerifier
 
@@ -69,8 +69,11 @@ app.config['SAML2_IDENTITY_PROVIDERS'] = [
 ]
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        sp.logout()
+
     if sp.is_user_logged_in():
         auth_data = sp.get_auth_data_in_session()
 
@@ -84,7 +87,7 @@ def index():
             for attr, value in auth_data.attributes.items()))
 
         logout_url = url_for('flask_saml2_sp.logout')
-        logout = f'<form action="{logout_url}" method="POST"><input type="submit" value="Log out"></form>'
+        logout = f'<form action="/" method="POST"><input type="submit" value="Log out"></form>'
 
         return message + attrs + logout
     else:
