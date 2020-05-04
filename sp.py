@@ -11,9 +11,6 @@ from flask_saml2.utils import certificate_from_file, private_key_from_file
 CERTIFICATE = certificate_from_file('sp.crt')
 PRIVATE_KEY = private_key_from_file('saml.key')
 
-# CERTIFICATE = certificate_from_file('idp_provided.crt')
-# PRIVATE_KEY = private_key_from_file('idp_provided.key')
-
 
 class ExampleServiceProvider(ServiceProvider):
     def get_logout_return_url(self):
