@@ -10,6 +10,7 @@ from flask_saml2.utils import certificate_from_file, private_key_from_file
 
 CERTIFICATE = certificate_from_file('sp.crt')
 PRIVATE_KEY = private_key_from_file('saml.key')
+PORT = 7000
 
 
 class ExampleServiceProvider(ServiceProvider):
@@ -26,7 +27,7 @@ app = Flask(__name__)
 app.debug = True
 app.secret_key = 'not a secret'
 
-app.config['SERVER_NAME'] = 'localhost:5000'
+app.config['SERVER_NAME'] = f'localhost:{port}'
 app.config['SAML2_SP'] = {
     'certificate': CERTIFICATE,
     'private_key': PRIVATE_KEY,
@@ -100,4 +101,4 @@ app.register_blueprint(sp.create_blueprint(), url_prefix='/saml/')
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(port=port)
